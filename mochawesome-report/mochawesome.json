@@ -1,0 +1,580 @@
+{
+  "stats": {
+    "suites": 8,
+    "tests": 17,
+    "passes": 13,
+    "pending": 0,
+    "failures": 4,
+    "start": "2025-03-03T15:34:15.881Z",
+    "end": "2025-03-03T15:34:26.433Z",
+    "duration": 10552,
+    "testsRegistered": 17,
+    "passPercent": 76.47058823529412,
+    "pendingPercent": 0,
+    "other": 1,
+    "hasOther": true,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "771149c5-f3ba-465a-af93-13244ceca237",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "d95ccc4f-a752-4f64-b4d1-613dc3cc9217",
+          "title": "User posts",
+          "fullFile": "C:\\Users\\HP\\Desktop\\qa_tests\\test\\posts.js",
+          "file": "\\test\\posts.js",
+          "beforeHooks": [
+            {
+              "title": "\"before all\" hook in \"User posts\"",
+              "fullTitle": "User posts \"before all\" hook in \"User posts\"",
+              "timedOut": false,
+              "duration": 712,
+              "state": null,
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// userId = await createRandomUser();\nuserId = await createRandomUserWithFaker();",
+              "err": {},
+              "uuid": "97cf7a98-6370-4a0d-8811-f6761e4f2f84",
+              "parentUUID": "d95ccc4f-a752-4f64-b4d1-613dc3cc9217",
+              "isHook": true,
+              "skipped": false
+            }
+          ],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "/posts",
+              "fullTitle": "User posts /posts",
+              "timedOut": false,
+              "duration": 678,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const data = {\n  user_id: userId,\n  title: faker.lorem.sentence(),\n  body: faker.lorem.paragraph(),\n};\nconst postRes = await request\n  .post(`posts`)\n  .set(\"Authorization\", `Bearer ${TOKEN}`)\n  .send(data);\n// console.log(postRes.body);\nexpect(postRes.body).to.deep.include(data);\npostId = postRes.body.id;",
+              "err": {},
+              "uuid": "3ab1303b-ce4c-4783-8918-dc20ee6be50a",
+              "parentUUID": "d95ccc4f-a752-4f64-b4d1-613dc3cc9217",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "GET /post/:id",
+              "fullTitle": "User posts GET /post/:id",
+              "timedOut": false,
+              "duration": 603,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "await request\n  .get(`posts/${postId}`)\n  .set(\"Authorization\", `Bearer ${TOKEN}`)\n  .expect(200);",
+              "err": {},
+              "uuid": "b0e32832-8e7e-4a81-80b0-b2dfd0d3c300",
+              "parentUUID": "d95ccc4f-a752-4f64-b4d1-613dc3cc9217",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [
+            {
+              "uuid": "f4400ee8-e69f-4230-a74e-ffb892a47d12",
+              "title": "Negative Tests",
+              "fullFile": "C:\\Users\\HP\\Desktop\\qa_tests\\test\\posts.js",
+              "file": "\\test\\posts.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "401 Authentification Failed",
+                  "fullTitle": "User posts Negative Tests 401 Authentification Failed",
+                  "timedOut": false,
+                  "duration": 593,
+                  "state": "passed",
+                  "speed": "slow",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "const data = {\n  user_id: userId,\n  title: `Title`,\n  body: `Body`,\n};\nconst postRes = await request.post(`posts`).send(data);\nexpect(postRes.status).to.eq(401);\nexpect(postRes.body.message).to.eq(\"Authentication failed\");",
+                  "err": {},
+                  "uuid": "e461ca6e-984a-4d5a-bb10-ae9342f265f4",
+                  "parentUUID": "f4400ee8-e69f-4230-a74e-ffb892a47d12",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "422 Validation Failed",
+                  "fullTitle": "User posts Negative Tests 422 Validation Failed",
+                  "timedOut": false,
+                  "duration": 308,
+                  "state": "passed",
+                  "speed": "slow",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "const data = {\n  user_id: userId,\n  title: `Title`,\n};\nconst postRes = await request\n  .post(`posts`)\n  .send(data)\n  .set(\"Authorization\", `Bearer ${TOKEN}`);\nexpect(postRes.status).to.eq(422);\nexpect(postRes.body[0].field).to.eq(\"body\");\nexpect(postRes.body[0].message).to.eq(\"can't be blank\");",
+                  "err": {},
+                  "uuid": "88a08c85-6891-4c28-9924-98b05fd5b089",
+                  "parentUUID": "f4400ee8-e69f-4230-a74e-ffb892a47d12",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "e461ca6e-984a-4d5a-bb10-ae9342f265f4",
+                "88a08c85-6891-4c28-9924-98b05fd5b089"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 901,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 5000
+            }
+          ],
+          "passes": [
+            "3ab1303b-ce4c-4783-8918-dc20ee6be50a",
+            "b0e32832-8e7e-4a81-80b0-b2dfd0d3c300"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 1281,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 5000
+        },
+        {
+          "uuid": "58cfce91-c400-4f32-ae55-4784bd6a3b00",
+          "title": "Users",
+          "fullFile": "C:\\Users\\HP\\Desktop\\qa_tests\\test\\users.js",
+          "file": "\\test\\users.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "GET /users",
+              "fullTitle": "Users GET /users",
+              "timedOut": false,
+              "duration": 2,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "request.get(`users?access-token=${TOKEN}`).end((err, res) => {\n  expect(res.body).to.not.be.empty;\n  done();\n});",
+              "err": {},
+              "uuid": "ad9c6405-9517-4bfc-8852-da9b32dd91e2",
+              "parentUUID": "58cfce91-c400-4f32-ae55-4784bd6a3b00",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "GET /users/:id",
+              "fullTitle": "Users GET /users/:id",
+              "timedOut": false,
+              "duration": 667,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "return request.get(`users/7733657?access-token=${TOKEN}`).then((res) => {\n  expect(res.body).to.not.be.empty;\n});",
+              "err": {
+                "message": "ReferenceError: done is not defined",
+                "estack": "ReferenceError: done is not defined\n    at Test.<anonymous> (file:///C:/Users/HP/Desktop/qa_tests/test/users.js:14:7)\n    at Test.assert (node_modules\\supertest\\lib\\test.js:172:8)\n    at localAssert (node_modules\\supertest\\lib\\test.js:120:14)\n    at C:\\Users\\HP\\Desktop\\qa_tests\\node_modules\\supertest\\lib\\test.js:125:7\n    at Request.callback (node_modules\\superagent\\lib\\node\\index.js:837:12)\n    at C:\\Users\\HP\\Desktop\\qa_tests\\node_modules\\superagent\\lib\\node\\index.js:1078:18\n    at IncomingMessage.<anonymous> (node_modules\\superagent\\lib\\node\\parsers\\json.js:21:7)\n    at Stream.emit (node:events:518:28)\n    at Unzip.<anonymous> (node_modules\\superagent\\lib\\node\\unzip.js:55:12)\n    at Unzip.emit (node:events:518:28)\n    at endReadableNT (node:internal/streams/readable:1696:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)",
+                "diff": null
+              },
+              "uuid": "e1bb597c-8f7a-491b-a340-b08e6cfa80f6",
+              "parentUUID": "58cfce91-c400-4f32-ae55-4784bd6a3b00",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "GET /users/:id",
+              "fullTitle": "Users GET /users/:id",
+              "timedOut": false,
+              "duration": 615,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "return request.get(`users/7733657?access-token=${TOKEN}`).then((res) => {\n  expect(res.body.data.id).to.be.eq(7733657);\n  //     TypeError: Cannot read properties of undefined (reading 'id')\n});",
+              "err": {
+                "message": "TypeError: Cannot read properties of undefined (reading 'id')",
+                "estack": "TypeError: Cannot read properties of undefined (reading 'id')\n    at file:///C:/Users/HP/Desktop/qa_tests/test/users.js:31:28\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)",
+                "diff": null
+              },
+              "uuid": "5d6a6540-9dc8-41cb-835c-9835a2951f7e",
+              "parentUUID": "58cfce91-c400-4f32-ae55-4784bd6a3b00",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "GET /users with query params",
+              "fullTitle": "Users GET /users with query params",
+              "timedOut": false,
+              "duration": 635,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const url = `users?access-token=${TOKEN}&gender=male&status=active`;\nreturn request.get(url).then((res) => {\n  expect(res.body).to.not.be.empty;\n  res.body.forEach((data) => {\n    expect(data.gender).to.eq(\"male\");\n    expect(data.status).to.eq(\"active\");\n  });\n});",
+              "err": {},
+              "uuid": "a7358bd9-a9bc-4833-ab11-77a188caaa59",
+              "parentUUID": "58cfce91-c400-4f32-ae55-4784bd6a3b00",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "POST /users",
+              "fullTitle": "Users POST /users",
+              "timedOut": false,
+              "duration": 615,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "const data = {\n  name: \"Ms. Anna\",\n  email: \"anna12@oconnell.test\",\n  gender: \"male\",\n  status: \"active\",\n};\nreturn request\n  .post(\"users\")\n  .set(\"Authorization\", `Bearer ${TOKEN}`)\n  .send(data)\n  .then((res) => {\n    console.log(res.body);\n    expect(res.body.email).to.eq(data.email);\n    expect(res.body.status).to.eq(data.status);\n  });",
+              "err": {
+                "message": "AssertionError: expected undefined to equal 'anna12@oconnell.test'",
+                "estack": "AssertionError: expected undefined to equal 'anna12@oconnell.test'\n    at file:///C:/Users/HP/Desktop/qa_tests/test/users.js:60:35\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)",
+                "diff": null
+              },
+              "uuid": "9d2dcefa-032e-4c22-889d-027886742c7c",
+              "parentUUID": "58cfce91-c400-4f32-ae55-4784bd6a3b00",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "PUT /users/:id",
+              "fullTitle": "Users PUT /users/:id",
+              "timedOut": false,
+              "duration": 640,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const data = {\n  name: \"Ms. Penny\",\n  status: \"inactive\",\n};\nreturn request\n  .put(`users/7734324`)\n  .set(\"Authorization\", `Bearer ${TOKEN}`)\n  .send(data)\n  .then((res) => {\n    console.log(res.body);\n    expect(res.body).to.deep.include(data);\n  });",
+              "err": {},
+              "uuid": "ac7a50af-dd91-446d-a21a-fe6fc00cc848",
+              "parentUUID": "58cfce91-c400-4f32-ae55-4784bd6a3b00",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "DELETE /users/:id",
+              "fullTitle": "Users DELETE /users/:id",
+              "timedOut": false,
+              "duration": 569,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "return request\n  .delete(`users/7734325`)\n  .set(\"Authorization\", `Bearer ${TOKEN}`)\n  .then((res) => {\n    console.log(res.body);\n    expect(res.body).to.be.eq(null);\n  });",
+              "err": {
+                "message": "AssertionError: expected { message: 'Resource not found' } to equal null",
+                "estack": "AssertionError: expected { message: 'Resource not found' } to equal null\n    at file:///C:/Users/HP/Desktop/qa_tests/test/users.js:86:32\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)",
+                "diff": null
+              },
+              "uuid": "19a318d6-3ada-4625-a720-7bac24245c02",
+              "parentUUID": "58cfce91-c400-4f32-ae55-4784bd6a3b00",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "ad9c6405-9517-4bfc-8852-da9b32dd91e2",
+            "a7358bd9-a9bc-4833-ab11-77a188caaa59",
+            "ac7a50af-dd91-446d-a21a-fe6fc00cc848"
+          ],
+          "failures": [
+            "e1bb597c-8f7a-491b-a340-b08e6cfa80f6",
+            "5d6a6540-9dc8-41cb-835c-9835a2951f7e",
+            "9d2dcefa-032e-4c22-889d-027886742c7c",
+            "19a318d6-3ada-4625-a720-7bac24245c02"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 3743,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 5000
+        },
+        {
+          "uuid": "42a063eb-c5f1-4aa9-aa97-b927585d8307",
+          "title": "Users",
+          "fullFile": "C:\\Users\\HP\\Desktop\\qa_tests\\test\\users_advanced.js",
+          "file": "\\test\\users_advanced.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [],
+          "suites": [
+            {
+              "uuid": "de426caa-1934-40ec-b6b1-ffe680767497",
+              "title": "POST",
+              "fullFile": "C:\\Users\\HP\\Desktop\\qa_tests\\test\\users_advanced.js",
+              "file": "\\test\\users_advanced.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": " /users",
+                  "fullTitle": "Users POST  /users",
+                  "timedOut": false,
+                  "duration": 626,
+                  "state": "passed",
+                  "speed": "slow",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "const data = {\n  name: \"anna12@oconnell.test\",\n  email: `test-${Math.floor(Math.random() * 9999)}@email.ca`,\n  gender: \"male\",\n  status: \"active\",\n};\nreturn request\n  .post(\"users\")\n  .set(\"Authorization\", `Bearer ${TOKEN}`)\n  .send(data)\n  .then((res) => {\n    // console.log(res.body);\n    // expect(res.body.email).to.eq(data.email);\n    // expect(res.body.status).to.eq(data.status);\n    expect(res.body).to.deep.include(data);\n    userId = res.body.id;\n    console.log(userId);\n    console.log(\"POST response:\", res.body);\n  });",
+                  "err": {},
+                  "uuid": "dca62e44-91d2-4dc5-8606-391372cdf06b",
+                  "parentUUID": "de426caa-1934-40ec-b6b1-ffe680767497",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "dca62e44-91d2-4dc5-8606-391372cdf06b"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 626,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 5000
+            },
+            {
+              "uuid": "7a0786a7-167a-40bf-aab1-60c5e773b4d3",
+              "title": "GET",
+              "fullFile": "C:\\Users\\HP\\Desktop\\qa_tests\\test\\users_advanced.js",
+              "file": "\\test\\users_advanced.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": " /users",
+                  "fullTitle": "Users GET  /users",
+                  "timedOut": false,
+                  "duration": 690,
+                  "state": "passed",
+                  "speed": "slow",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "return request.get(`users?access-token=${TOKEN}`).then((res) => {\n  expect(res.body).to.not.be.empty;\n});",
+                  "err": {},
+                  "uuid": "5858d6b2-e648-45c4-bae7-c9764a542e55",
+                  "parentUUID": "7a0786a7-167a-40bf-aab1-60c5e773b4d3",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "  /users/:id",
+                  "fullTitle": "Users GET   /users/:id",
+                  "timedOut": false,
+                  "duration": 576,
+                  "state": "passed",
+                  "speed": "slow",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "return request\n  .get(`users/${userId}?access-token=${TOKEN}`)\n  .then((res) => {\n    expect(res.body.id).to.be.eq(userId);\n  });",
+                  "err": {},
+                  "uuid": "d6adf2a1-9b4d-42c7-ade7-25ecd88102fc",
+                  "parentUUID": "7a0786a7-167a-40bf-aab1-60c5e773b4d3",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": " /users with query params",
+                  "fullTitle": "Users GET  /users with query params",
+                  "timedOut": false,
+                  "duration": 685,
+                  "state": "passed",
+                  "speed": "slow",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "const url = `users?access-token=${TOKEN}&gender=male&status=active`;\nreturn request.get(url).then((res) => {\n  expect(res.body).to.not.be.empty;\n  res.body.forEach((data) => {\n    expect(data.gender).to.eq(\"male\");\n    expect(data.status).to.eq(\"active\");\n  });\n});",
+                  "err": {},
+                  "uuid": "411abb02-beb2-4afc-a6e6-8e5018467416",
+                  "parentUUID": "7a0786a7-167a-40bf-aab1-60c5e773b4d3",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "5858d6b2-e648-45c4-bae7-c9764a542e55",
+                "d6adf2a1-9b4d-42c7-ade7-25ecd88102fc",
+                "411abb02-beb2-4afc-a6e6-8e5018467416"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 1951,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 5000
+            },
+            {
+              "uuid": "4105a9dc-a12b-44b0-8c3f-6e58022c9086",
+              "title": "PUT",
+              "fullFile": "C:\\Users\\HP\\Desktop\\qa_tests\\test\\users_advanced.js",
+              "file": "\\test\\users_advanced.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "  /users/:id",
+                  "fullTitle": "Users PUT   /users/:id",
+                  "timedOut": false,
+                  "duration": 627,
+                  "state": "passed",
+                  "speed": "slow",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "const data = {\n  name: `Penny - ${Math.floor(Math.random() * 9999)}`,\n  status: \"inactive\",\n};\nreturn request\n  .put(`users/${userId}`)\n  .set(\"Authorization\", `Bearer ${TOKEN}`)\n  .send(data)\n  .then((res) => {\n    expect(res.body).to.deep.include(data);\n  });",
+                  "err": {},
+                  "uuid": "6315a013-5c8a-43be-aa66-51f41492a082",
+                  "parentUUID": "4105a9dc-a12b-44b0-8c3f-6e58022c9086",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "6315a013-5c8a-43be-aa66-51f41492a082"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 627,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 5000
+            },
+            {
+              "uuid": "115fcb9b-f1ba-4f2b-a5da-eb20270afa77",
+              "title": "DELETE",
+              "fullFile": "C:\\Users\\HP\\Desktop\\qa_tests\\test\\users_advanced.js",
+              "file": "\\test\\users_advanced.js",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": " /users/:id",
+                  "fullTitle": "Users DELETE  /users/:id",
+                  "timedOut": false,
+                  "duration": 680,
+                  "state": "passed",
+                  "speed": "slow",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "return request\n  .delete(`users/${userId}`)\n  .set(\"Authorization\", `Bearer ${TOKEN}`)\n  .then((res) => {\n    expect(res.body).to.not.be.eq(null);\n  });",
+                  "err": {},
+                  "uuid": "f1dbacfe-84db-4e21-92a8-57f5f37b9b66",
+                  "parentUUID": "115fcb9b-f1ba-4f2b-a5da-eb20270afa77",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "f1dbacfe-84db-4e21-92a8-57f5f37b9b66"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 680,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 5000
+            }
+          ],
+          "passes": [],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 0,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 5000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 5000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "11.1.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": null,
+      "version": "6.2.0"
+    }
+  }
+}
